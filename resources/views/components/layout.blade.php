@@ -25,9 +25,12 @@
                 </ul>
             </div>
         @endif
-        
+
         {{ $slot }}
     </div>
+    
 </body>
+
+
 
 </html>

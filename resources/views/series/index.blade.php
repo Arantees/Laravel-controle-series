@@ -10,11 +10,12 @@
     <ul class="list-group">
         @foreach ($series as $serie)
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="{{ route('seasons.index', $serie->id) }}">
+                <a class="col-4 text-start" href="{{ route('seasons.index', $serie->id) }}">
                     {{ $serie->nome }}
                 </a>
-                <p>{{ $serie->totalSeason }} Season(s)</p>
-                <span class="d-flex">
+                <p class="col-4 text-center">{{ $serie->totalSeason }} Season(s)</p>
+                <p class="col-3">Episodios</p>
+                <div class="d-flex col-1 text-end">
                     <a href="{{ route('series.edit', $serie->id) }}" class="btn btn-primary btn-sm">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
@@ -25,9 +26,9 @@
                         <button class="btn btn-danger btn-sm"><i
                                 class="fa-regular fa-trash-can"></i></button>
                     </form>
-                </span>
+                </div>
             </li>
         @endforeach
     </ul>
-    </div>
+    
 </x-layout>

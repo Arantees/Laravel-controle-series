@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SeriesFormRequest;
-use App\Models\Episode;
 use App\Models\Season;
 use App\Models\Series;
+use App\Repositories\SeriesRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class SeriesController extends Controller
 {
+    public function __construct(private SeriesRepository $repository)
+    {
+        
+    } 
 
     public function index(Request $request)
     {
@@ -34,35 +36,8 @@ class SeriesController extends Controller
     }
 
     public function store(SeriesFormRequest $request)
-    {
-        $series = DB::transaction(function () use ($request) {
-            $data = $request->all();
-            //dd($data)
-
-            $series = Series::create($data);
-
-            $seasons = [];
-            for ($i = 1; $i <= $request->seasonsQty; $i++) {
-                $seasons[] = [
-                    'series_id' => $series->id,
-                    'number' => $i,
-                ];
-            }
-            Season::insert($seasons);
-
-            $episodes = [];
-            foreach ($series->seasons as $season) {
-                for ($j = 1; $j <= $request->episodesPerSeason; $j++) {
-                    $episodes[] = [
-                        'season_id' => $season->id,
-                        'number' => $j
-                    ];
-                }
-            }
-            Episode::insert($episodes);
-
-            return $series;
-        });
+    {   
+        $series = $this->repository->add($request);
 
         return redirect()->route('series.index')
             ->with('mensagem.sucesso',"Série '{$series->nome}' adicionada com sucesso");

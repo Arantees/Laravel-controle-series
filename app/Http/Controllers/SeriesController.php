@@ -24,7 +24,6 @@ class SeriesController extends Controller
         }
 
         $mensagemSucesso = session('mensagem.sucesso');
-        //$request->session()->forget('mensagem.sucesso');
         return view('series.index')
             ->with('series', $series)
             ->with('mensagemSucesso', $mensagemSucesso);
@@ -57,21 +56,7 @@ class SeriesController extends Controller
 
     public function update(Series $series, SeriesFormRequest $request)
     {        
-        if($series->seasons->count() < $request->seasonsQty){
-            $seasons = [];
-            for ($i = $series->seasons->count()+1; $i <= $request->seasonsQty; $i++) {
-                $seasons[] = [
-                    'series_id' => $series->id,
-                    'number' => $i,
-                ];
-            }
-            Season::insert($seasons);           
-        }else{
-            $seasons = range($request->seasonsQty +1, $series->seasons->count() );
-            
-            Season::where('series_id', $series->id)->whereIn('number', $seasons)->delete(); 
-        }
-            
+        $series = $this->repository->edit($request, $series); 
 
         $series->fill($request->all());
         $series->save();

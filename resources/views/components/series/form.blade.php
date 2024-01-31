@@ -30,13 +30,17 @@
                  </div>
              </div>
              <div class="mb-3">
-                <label for="descricao" class="form-label">
-                    <h1 style="color: white">Description:</h1>
-                </label>
-                <div class="card">
-                    <textarea id="descricao" name="description" class="form-control" style="resize: vertical; min-height: 100px;">@isset($descricao){{ $descricao }}@endisset</textarea>
-                </div>
-            </div>
+                 <label for="descricao" class="form-label">
+                     <h1 style="color: white">Description:</h1>
+                 </label>
+                 <div class="card">
+                     <textarea id="descricao" name="description" class="form-control" style="resize: vertical; min-height: 100px;">
+@isset($descricao)
+{{ $descricao }}
+@endisset
+</textarea>
+                 </div>
+             </div>
          </div>
 
          <button type="submit" class="btn btn-dark">Adicionar</button>

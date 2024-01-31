@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EpisodesController;
 use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\SeasonsController;
 use App\Http\Middleware\SeriesMid;
@@ -40,6 +41,11 @@ use Illuminate\Support\Facades\Route;
 
     // SEASONS
     Route::get('series/{series}/seasons', [SeasonsController::class, 'index'])->name('seasons.index');
+
+    //EPISODES
+    Route::get('seasons/{season}/episodes', [EpisodesController::class, 'index'])->name('episodes.index');
+    Route::post('seasons/{season}/episodes', [EpisodesController::class, 'update'])->name('episodes.update');
+   
     //->only(['index', 'create', 'store', 'destroy', 'edit', 'update']);
 
     //Route::post('/series/destroy/{serie}', [SeriesController::class,

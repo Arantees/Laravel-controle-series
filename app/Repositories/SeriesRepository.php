@@ -10,4 +10,5 @@ interface SeriesRepository
 {
     public function add(SeriesFormRequest $request): Series;
     
+    public function edit(SeriesFormRequest $request, Series $series);
 }

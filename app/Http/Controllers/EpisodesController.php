@@ -11,7 +11,7 @@ class EpisodesController
     public function index(Season $season)
     {
         return view('episodes.index', [
-            'episodes' => $season->episodes,
+            'episodes' => $season->episodes->sortBy('number'),
             'mensagemSucesso' => session('mensagem.sucesso')
         ]);
     }

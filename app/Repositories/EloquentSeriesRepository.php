@@ -54,12 +54,15 @@ class EloquentSeriesRepository implements SeriesRepository
                     'number' => $i,
                 ];
             }
-            Season::insert($seasons);
+            Season::insert($seasons);            
         } else {
             $seasonsToDelete = range($request->seasonsQty + 1, $series->seasons->count());
 
-            Season::where('series_id', $series->id)->whereIn('number', $seasonsToDelete)->delete();
+            Season::where('series_id', $series->id)->where('number', '>', $request->seasonsQty)->delete();
+            
         }
+        $series->refresh();
+
         if ($series->seasons) {
             foreach ($series->seasons as $season)
                 if ($season->episodes->count() < $request->episodesPerSeason) {
@@ -74,7 +77,7 @@ class EloquentSeriesRepository implements SeriesRepository
                 } else {
                     $episodes = range($request->episodesPerSeason + 1, $season->episodes->count());
 
-                    Episode::where('season_id', $season->id)->whereIn('number', $episodes)->delete();
+                    Episode::where('season_id', $season->id)->whereIn('number', $episodes)->delete();                    
                 }
             return $series;
         }

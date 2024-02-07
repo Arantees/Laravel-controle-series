@@ -13,8 +13,8 @@ class SeriesController extends Controller
 {
     public function __construct(private SeriesRepository $repository)
     {
-        $this->middleware(Authenticator::class)->except('index');        
-    } 
+        $this->middleware(Authenticator::class)->except('index');
+    }
 
     public function index(Request $request)
     {
@@ -22,17 +22,21 @@ class SeriesController extends Controller
 
         foreach ($series as $serie) {
             $serie->totalSeason = $serie->seasons->count();
+            foreach ($serie->seasons as $season) {
+                $serie->totalEpisodes = $season->episodes->count();
+            }
         }
 
+
+
         $mensagemSucesso = session('mensagem.sucesso');
-        
-       /**  return view('series.index')
+
+        /**  return view('series.index')
             ->with('series', $series)
             ->with('mensagemSucesso', $mensagemSucesso);
-            */
+         */
 
-            return view('series.index', compact('series', 'mensagemSucesso'));
-
+        return view('series.index', compact('series', 'mensagemSucesso'));
     }
 
     public function create()
@@ -41,11 +45,11 @@ class SeriesController extends Controller
     }
 
     public function store(SeriesFormRequest $request)
-    {   
+    {
         $series = $this->repository->add($request);
 
         return redirect()->route('series.index')
-            ->with('mensagem.sucesso',"Série '{$series->nome}' adicionada com sucesso");
+            ->with('mensagem.sucesso', "Série '{$series->nome}' adicionada com sucesso");
     }
 
     public function destroy(Series $series)
@@ -61,8 +65,8 @@ class SeriesController extends Controller
     }
 
     public function update(Series $series, SeriesFormRequest $request)
-    {        
-        $series = $this->repository->edit($request, $series); 
+    {
+        $series = $this->repository->edit($request, $series);
 
         $series->fill($request->all());
         $series->save();

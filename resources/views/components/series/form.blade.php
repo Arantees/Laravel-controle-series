@@ -4,7 +4,8 @@
 
          @if ($update)
              @method('PUT')
-         @endif
+         @endif         
+         </div>
          <div class="container">
              <div class="row">
                  <div class="mb-3 mt-3 col-6">

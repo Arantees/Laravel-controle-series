@@ -45,7 +45,7 @@ Route::put('series/{series}', [SeriesController::class, 'update'])->name('series
 Route::delete('series/{series}', [SeriesController::class, 'destroy'])->name('series.destroy');
 
 //Grupo de rotas com middleware
-Route::middleware('autenthicator')->group(function () {
+Route::middleware('authenticator')->group(function () {
 
     Route::get('/', function () {
         return redirect('/series');

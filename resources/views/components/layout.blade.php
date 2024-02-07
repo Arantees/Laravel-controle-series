@@ -13,31 +13,41 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Navbar</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-              </li>
-            </ul>
-          </div>
+    <nav class="navbar navbar-expand-lg" style="background-color: black">
+        <div class="container-fluid d-flex">
+            <div class="col-1">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" width="55" height="55">
+            </div>
+
+            <div class="col-9 d-flex">
+                <a class="navbar-brand" href="{{ route('home.index') }}">Home</a>
+                <a class="navbar-brand" href="{{ route('series.index') }}">Series</a>
+                @auth
+                <a class="navbar-brand" href="{{ route('series.create') }}">Add Series</a>
+                @endauth
+            </div>
+
+            <div class="col-2">
+                @auth
+                    <a href="{{ route('logout') }}" class="ml-auto">Sair</a>
+                @endauth
+
+                @guest
+                    <a href="{{ route('login.index') }}">Entrar</a>
+                @endguest
+            </div>
         </div>
-      </nav>
-      
+    </nav>
+
+
+
+
+    @isset($mensagemSucesso)
+        <div class="alert alert-success">
+            {{ $mensagemSucesso }}
+        </div>
+    @endisset
+
     <div class="container align-items-center mt-5">
         <h1 style="color: white">{{ $title }}</h1>
 
@@ -53,7 +63,7 @@
 
         {{ $slot }}
     </div>
-    
+
 </body>
 
 

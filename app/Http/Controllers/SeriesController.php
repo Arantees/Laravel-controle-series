@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\Authenticator;
 use App\Http\Requests\SeriesFormRequest;
 use App\Models\Season;
 use App\Models\Series;
@@ -12,7 +13,7 @@ class SeriesController extends Controller
 {
     public function __construct(private SeriesRepository $repository)
     {
-        
+        $this->middleware(Authenticator::class)->except('index');        
     } 
 
     public function index(Request $request)
@@ -24,9 +25,14 @@ class SeriesController extends Controller
         }
 
         $mensagemSucesso = session('mensagem.sucesso');
-        return view('series.index')
+        
+       /**  return view('series.index')
             ->with('series', $series)
             ->with('mensagemSucesso', $mensagemSucesso);
+            */
+
+            return view('series.index', compact('series', 'mensagemSucesso'));
+
     }
 
     public function create()

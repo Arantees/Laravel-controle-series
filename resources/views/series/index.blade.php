@@ -1,16 +1,9 @@
-<x-layout title="Series">
-    <a href="{{ route('series.create') }}" class="btn btn-primary mb-5">Add</a>
+<x-layout title="Series" :mensagem-sucesso="$mensagemSucesso">
 
-    @isset($mensagemSucesso)
-        <div class="alert alert-success">
-            {{ $mensagemSucesso }}
-        </div>
-    @endisset
-
-    <ul class="list-group">
+    <ul class="list-group mt-3">
         @foreach ($series as $serie)
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a class="col-4 text-start" href="{{ route('seasons.index', $serie->id) }}">
+               @auth <a class="col-4 text-start" href="{{ route('seasons.index', $serie->id) }}">@endauth
                     {{ $serie->nome }}
                 </a>
                 <p class="col-4 text-center">{{ $serie->totalSeason }} Season(s)</p>

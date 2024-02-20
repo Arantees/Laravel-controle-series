@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\Authenticator;
-use App\Http\Requests\SeriesFormRequest;
+use App\Models\User;
 use App\Models\Season;
 use App\Models\Series;
-use App\Repositories\SeriesRepository;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Middleware\Authenticator;
+use App\Repositories\SeriesRepository;
+use App\Http\Requests\SeriesFormRequest;
+use App\Events\SeriesCreated as EventsSeriesCreated;
 
 class SeriesController extends Controller
 {
@@ -27,8 +31,6 @@ class SeriesController extends Controller
             }
         }
 
-
-
         $mensagemSucesso = session('mensagem.sucesso');
 
         /**  return view('series.index')
@@ -47,6 +49,12 @@ class SeriesController extends Controller
     public function store(SeriesFormRequest $request)
     {
         $series = $this->repository->add($request);
+        EventsSeriesCreated::dispatch(
+            $series->nome,
+            $series->id,
+            $request->seasonsQty,
+            $request->episodesPerSeason,
+        );
 
         return redirect()->route('series.index')
             ->with('mensagem.sucesso', "Série '{$series->nome}' adicionada com sucesso");

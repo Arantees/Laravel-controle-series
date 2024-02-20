@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\SeriesCreated;
 use App\Http\Middleware\SeriesMid;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\Authenticator;
@@ -33,16 +34,7 @@ Route::get('home', [HomeController::class, 'index'])->name('home.index');
 // SERIES
 Route::get('series', [SeriesController::class, 'index'])->name('series.index');
 
-// CREATE
-Route::get('series/create', [SeriesController::class, 'create'])->name('series.create');
-Route::post('series', [SeriesController::class, 'store'])->name('series.store');
 
-// UPDATE
-Route::get('series/{series}/edit', [SeriesController::class, 'edit'])->name('series.edit');
-Route::put('series/{series}', [SeriesController::class, 'update'])->name('series.update');
-
-// DELETE
-Route::delete('series/{series}', [SeriesController::class, 'destroy'])->name('series.destroy');
 
 //Grupo de rotas com middleware
 Route::middleware('authenticator')->group(function () {
@@ -50,6 +42,18 @@ Route::middleware('authenticator')->group(function () {
     Route::get('/', function () {
         return redirect('/series');
     });
+    
+    // CREATE
+    Route::get('series/create', [SeriesController::class, 'create'])->name('series.create');
+    Route::post('series', [SeriesController::class, 'store'])->name('series.store');
+
+    // UPDATE
+    Route::get('series/{series}/edit', [SeriesController::class, 'edit'])->name('series.edit');
+    Route::put('series/{series}', [SeriesController::class, 'update'])->name('series.update');
+
+    // DELETE
+    Route::delete('series/{series}', [SeriesController::class, 'destroy'])->name('series.destroy');
+
 
     // SEASONS
     Route::get('series/{series}/seasons', [SeasonsController::class, 'index'])->name('seasons.index');
@@ -70,6 +74,14 @@ Route::get('/logout', [LoginController::class, 'destroy'])->name('logout');
 Route::get('/register', [UsersController::class, 'create'])->name('users.create');
 Route::post('/register', [UsersController::class, 'store'])->name('users.store');
 
+Route::get('/email', function(){
+    return new SeriesCreated(
+        'Serie de Teste',
+        19,
+        5,
+        10
+    );
+});
 //->only(['index', 'create', 'store', 'destroy', 'edit', 'update']);
 
 //Route::post('/series/destroy/{serie}', [SeriesController::class,

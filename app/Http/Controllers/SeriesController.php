@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Middleware\Authenticator;
 use App\Repositories\SeriesRepository;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\SeriesFormRequest;
 use App\Events\SeriesCreated as EventsSeriesCreated;
 
@@ -48,7 +49,13 @@ class SeriesController extends Controller
 
     public function store(SeriesFormRequest $request)
     {
-        $series = $this->repository->add($request);
+        $coverPath = $request->file('cover')
+            ->store('series_cover', 'public');            
+            $data = $request->all();
+            $data['coverPath'] = $coverPath; 
+
+
+        $series = $this->repository->add($data);
         EventsSeriesCreated::dispatch(
             $series->nome,
             $series->id,
@@ -62,8 +69,12 @@ class SeriesController extends Controller
 
     public function destroy(Series $series)
     {
+        if ($series->coverPath) {
+            Storage::disk('public/storage/')->delete($series->coverPath);
+        }
+
         $series->delete();
-        return to_route('series.index')
+        return redirect()->route('series.index')
             ->with('mensagem.sucesso', "Série '{$series->nome}' removida com sucesso");
     }
 

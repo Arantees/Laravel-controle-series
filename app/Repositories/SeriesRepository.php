@@ -8,7 +8,7 @@ use App\Models\Series;
 
 interface SeriesRepository
 {
-    public function add(SeriesFormRequest $request): Series;
+    public function add($request): Series;
     
     public function edit(SeriesFormRequest $request, Series $series);
 }

@@ -11,6 +11,8 @@ use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\SeasonsController;
 use App\Http\Controllers\EpisodesController;
 
+// Wictor esteve aqui
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,7 +44,7 @@ Route::middleware('authenticator')->group(function () {
     Route::get('/', function () {
         return redirect('/series');
     });
-    
+
     // CREATE
     Route::get('series/create', [SeriesController::class, 'create'])->name('series.create');
     Route::post('series', [SeriesController::class, 'store'])->name('series.store');
